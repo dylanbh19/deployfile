@@ -1,0 +1,29 @@
+name: Deploy with Makefile
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the repo
+    - name: Checkout GitHub repo
+      uses: actions/checkout@v2
+
+    # Set up necessary tools (like Azure CLI, etc.)
+    - name: Setup Azure CLI
+      uses: azure/setup-azure-cli@v1
+
+    # Log in to Azure
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Run Makefile deploy
+    - name: Deploy using Makefile
+      run: make deploy
